@@ -1,0 +1,32 @@
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0                                    # MySQL 8.0 이미지 사용
+    container_name: starmeet-mysql
+    restart: unless-stopped                             # 컨테이너 자동 재시작
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}               # 루트 패스워드
+      MYSQL_DATABASE: ${DB_NAME}                        # 데이터베이스 이름
+      MYSQL_USER: ${DB_USERNAME}                        # 사용자명
+      MYSQL_PASSWORD: ${DB_PASSWORD}                    # 사용자 패스워드
+      TZ: Asia/Seoul                                    # 타임존 설정
+    ports:
+      - "${DB_PORT}"                               # 포트 매핑
+    volumes:
+      - mysql_data:/var/lib/mysql                       # 데이터 영속성
+    command:
+      - --character-set-server=utf8mb4                  # 문자셋 설정
+      - --collation-server=utf8mb4_unicode_ci           # 콜레이션 설정
+      - --default-time-zone=+09:00                      # 기본 타임존
+    networks:
+      - starmeet-network
+
+# Volume 정의
+volumes:
+  mysql_data:                                           # MySQL 데이터 볼륨
+    driver: local
+
+# Network 정의
+networks:
+  starmeet-network:                                     # 커스텀 네트워크
+    driver: bridge
