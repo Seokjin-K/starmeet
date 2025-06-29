@@ -1,0 +1,52 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.0'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+
+group = 'com.starmeet'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'        // REST API
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'   // JPA
+	implementation 'org.springframework.boot:spring-boot-starter-security'   // Security
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // Validation
+
+	// Database
+	runtimeOnly 'com.mysql:mysql-connector-j'                                // MySQL Driver
+
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'                         // JWT API
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'                           // JWT Implementation
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'                        // JWT Jackson
+
+	// Utility
+	compileOnly 'org.projectlombok:lombok'                                   // Lombok
+	annotationProcessor 'org.projectlombok:lombok'                           // Lombok Processor
+
+	// Environment Variables
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'                      // .env support
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'   // Test Starter
+	testImplementation 'org.springframework.security:spring-security-test'   // Security Test
+	testImplementation 'org.testcontainers:junit-jupiter'                    // Testcontainers
+	testImplementation 'org.testcontainers:mysql'                            // Testcontainers MySQL
+	testImplementation 'org.testcontainers:redis'                            // Testcontainers Redis
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
